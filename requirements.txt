@@ -4,4 +4,5 @@ uvicorn
 requests
 psycopg[binary]
 python-dotenv
+python-multipart
 pytest

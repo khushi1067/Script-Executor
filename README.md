@@ -1,54 +1,35 @@
 # Script Executor
 
-Script Executor is a Python Script Execution & Monitoring Hub. It will provide a simple place to run Python scripts and review their execution results.
+Script Executor is a Streamlit workspace for checking CSVs, resolving duplicates, and running approved Python workflows. FastAPI records script executions and logs in Neon PostgreSQL.
 
-This initial version contains only the project structure and placeholder pages. Database connections, script execution, and monitoring are planned for future work.
+## Run locally
 
-## Tech stack
-
-- **Python:** application language.
-- **Streamlit:** web interface and standard multipage navigation.
-- **PostgreSQL (Neon):** planned storage for execution records.
-- **psycopg:** planned Python connection to PostgreSQL.
-- **python-dotenv:** planned loading of local environment variables.
-- **pytest:** testing.
-- **Render:** planned application hosting.
-- **GitHub:** source code management.
-
-## Project structure
-
-```text
-app.py                      Main Streamlit page
-pages/                      Placeholder pages in sidebar order
-    1_Dashboard.py
-    2_Run_Script.py
-    3_Execution_History.py
-    4_Run_Details.py
-database/__init__.py        Package for future database code
-services/__init__.py        Package for future application logic
-scripts/__init__.py         Package for future Python scripts
-tests/__init__.py           Package for future tests
-requirements.txt           Python dependencies
-.env.example               Environment variable template with no credentials
-.gitignore                 Files excluded from version control
-```
-
-Streamlit automatically adds the Python files in `pages/` to its sidebar navigation. The numbered filenames control their order.
-
-## Running locally
-
-After installing the dependencies in your Python environment, start the app with:
+Use Python 3.12 or later. Install the dependencies and create a local environment file.
 
 ```sh
-streamlit run app.py
+python -m pip install -r requirements.txt
+cp .env.example .env
 ```
 
-The placeholder app does not need a database or environment variables. For future database setup, `.env.example` documents the `DATABASE_URL` variable without storing credentials.
+Set `DATABASE_URL` in `.env` to your Neon connection string. Apply the schema and register the approved scripts once for a new database.
 
-## Planned features
+```sh
+python -c "from deploy.start import initialize_database; initialize_database()"
+```
 
-- Dashboard showing execution summaries.
-- Page for selecting and running Python scripts.
-- Execution history stored in PostgreSQL.
-- Run details showing status, timing, output, and errors.
-- Deployment on Render.
+Start FastAPI and Streamlit in separate terminals.
+
+```sh
+python -m uvicorn backend.main:app --reload
+python -m streamlit run app.py
+```
+
+Run the test suite with `python -m pytest -q`.
+
+## Deploy on Render
+
+The repository includes a Docker-based [Render Blueprint](https://render.com/docs/infrastructure-as-code). In the Render dashboard, create a Blueprint from the GitHub repository and choose the branch containing `render.yaml`. Provide `DATABASE_URL` in Render's environment settings. A separate Neon database or branch lets you start with a clean execution history.
+
+The container initializes the schema and registers the scripts on startup. Render generates `APP_PASSWORD`. Find it under the service's environment settings and sign in to the HTTPS service URL with username `workspace` and that password. FastAPI and Streamlit listen on loopback behind the authenticated proxy. Render checks the public `/healthz` endpoint.
+
+After deployment, open the Dashboard through the HTTPS URL, run a workflow with the bundled sample, then check its entry in Execution History. The Blueprint uses a [free Render web service](https://render.com/docs/free), which can take time to wake after inactivity.

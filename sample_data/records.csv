@@ -1,0 +1,21 @@
+record_id,name,age,city,email
+1,Avery Example,28,Toronto,avery@example.com
+2,Blair Sample,34,Ottawa,blair@example.com
+3,Casey Demo,22,Toronto,casey@example.com
+4,Drew Fiction,45,Montreal,drew@example.com
+5,Ellis Example,,Ottawa,ellis@example.com
+6,Finley Sample,thirty,Vancouver,finley@example.com
+7,Gray Demo,-5,Toronto,gray@example.com
+8,Harper Fiction,151,Montreal,harper@example.com
+9,Indigo Example,31,Vancouver,indigo.example.com
+10,Jules Sample,26,Ottawa,jules@example
+11,Kai Demo,40,Toronto,
+12,,29,Montreal,lee@example.com
+13,Morgan Fiction,36,,morgan@example.com
+,Noel Example,24,Vancouver,noel@example.com
+15,Oakley Sample,52,Ottawa,oakley@example.com
+16,Parker Demo,19,Toronto,parker@example.com
+17,Quinn Fiction,63,Montreal,quinn@example.com
+18,River Example,33,Vancouver,river@example.com
+3,Casey Demo,22,Toronto,casey@example.com
+15,Oakley Sample,52,Ottawa,oakley@example.com
